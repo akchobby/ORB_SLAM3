@@ -30,13 +30,11 @@
 
 #include "Tracking.h"
 #include "FrameDrawer.h"
-#include "MapDrawer.h"
 #include "Atlas.h"
 #include "LocalMapping.h"
 #include "LoopClosing.h"
 #include "KeyFrameDatabase.h"
 #include "ORBVocabulary.h"
-#include "Viewer.h"
 #include "ImuTypes.h"
 #include "Settings.h"
 
@@ -70,10 +68,7 @@ public:
         th = _th;
     }
 };
-
-class Viewer;
 class FrameDrawer;
-class MapDrawer;
 class Atlas;
 class Tracking;
 class LocalMapping;
@@ -185,6 +180,10 @@ public:
     void ChangeDataset();
 
     float GetImageScale();
+    cv::Mat DrawCurrentFrame ();
+    bool isRunningGBA();
+
+    std::vector<MapPoint*> GetAllMapPoints() ;
 
 #ifdef REGISTER_TIMES
     void InsertRectTime(double& time);
@@ -196,6 +195,8 @@ private:
 
     void SaveAtlas(int type);
     bool LoadAtlas(int type);
+
+    Sophus::SE3f current_position_;
 
     string CalculateCheckSum(string filename, int type);
 
@@ -209,7 +210,7 @@ private:
     KeyFrameDatabase* mpKeyFrameDatabase;
 
     // Map structure that stores the pointers to all KeyFrames and MapPoints.
-    //Map* mpMap;
+    // Map* mpMap;
     Atlas* mpAtlas;
 
     // Tracker. It receives a frame and computes the associated camera pose.
@@ -225,16 +226,16 @@ private:
     LoopClosing* mpLoopCloser;
 
     // The viewer draws the map and the current camera pose. It uses Pangolin.
-    Viewer* mpViewer;
+    // Viewer* mpViewer;
 
     FrameDrawer* mpFrameDrawer;
-    MapDrawer* mpMapDrawer;
+    // MapDrawer* mpMapDrawer;
 
     // System threads: Local Mapping, Loop Closing, Viewer.
     // The Tracking thread "lives" in the main execution thread that creates the System object.
     std::thread* mptLocalMapping;
     std::thread* mptLoopClosing;
-    std::thread* mptViewer;
+    // std::thread* mptViewer;
 
     // Reset flag
     std::mutex mMutexReset;

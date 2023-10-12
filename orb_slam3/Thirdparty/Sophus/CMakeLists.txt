@@ -93,21 +93,7 @@ target_compile_features (sophus INTERFACE
   cxx_variadic_templates
 )
 
-# Add sources as custom target so that they are shown in IDE's
-add_custom_target(other SOURCES ${SOPHUS_OTHER_FILES})
 
-# Create 'test' make target using ctest
-option(BUILD_TESTS "Build tests." ON)
-if(BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(test)
-endif()
-
-# Create examples make targets using ctest
-option(BUILD_EXAMPLES "Build examples." ON)
-if(BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
 
 # Export package for use from the build tree
 set(SOPHUS_CMAKE_EXPORT_DIR ${CMAKE_INSTALL_DATADIR}/sophus/cmake)

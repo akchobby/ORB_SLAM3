@@ -39,7 +39,7 @@ Verbose::eLevel Verbose::th = Verbose::VERBOSITY_NORMAL;
 
 System::System(const string &strVocFile, const string &strSettingsFile, const eSensor sensor,
                const bool bUseViewer, const int initFr, const string &strSequence):
-    mSensor(sensor), mpViewer(static_cast<Viewer*>(NULL)), mbReset(false), mbResetActiveMap(false),
+    mSensor(sensor), mbReset(false), mbResetActiveMap(false),
     mbActivateLocalizationMode(false), mbDeactivateLocalizationMode(false), mbShutDown(false)
 {
     // Output welcome message
@@ -181,13 +181,13 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         mpAtlas->SetInertialSensor();
 
     //Create Drawers. These are used by the Viewer
-    mpFrameDrawer = new FrameDrawer(mpAtlas);
-    mpMapDrawer = new MapDrawer(mpAtlas, strSettingsFile, settings_);
+    // mpFrameDrawer = new FrameDrawer(mpAtlas);
+    // mpMapDrawer = new MapDrawer(mpAtlas, strSettingsFile, settings_);
 
     //Initialize the Tracking thread
     //(it will live in the main thread of execution, the one that called this constructor)
     cout << "Seq. Name: " << strSequence << endl;
-    mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
+    mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, 
                              mpAtlas, mpKeyFrameDatabase, strSettingsFile, mSensor, settings_, strSequence);
 
     //Initialize the Local Mapping thread and launch
@@ -459,7 +459,18 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
     return Tcw;
 }
 
+cv::Mat System::DrawCurrentFrame () {
+  return mpFrameDrawer->DrawFrame();
+}
 
+std::vector<MapPoint*> System::GetAllMapPoints() {
+  return mpAtlas->GetAllMapPoints();
+}
+
+bool System::isRunningGBA()
+{
+    return  mpLoopCloser->isRunningGBA();
+}
 
 void System::ActivateLocalizationMode()
 {

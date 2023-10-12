@@ -35,4 +35,21 @@ int main() {
   // Note that the order of coefficiences of Eigen's quaternion class is
   // (imag0, imag1, imag2, real)
   std::cout << std::endl;
+
+  Sophus::SO3d world_from_camera_rotation =
+      Sophus::SO3d::rotX(kPi / 4);
+  // Then the position of the camera in the world.
+  Eigen::Vector3d camera_in_world(0.0, 0.0, 1.0);
+
+  // The pose (position and orientation) of the camera in the world is
+  // constructed by its orientation ``world_from_camera_rotation`` as well as
+  // its position ``camera_in_world``.
+  Sophus::SE3d world_anchored_camera_pose(
+      world_from_camera_rotation, camera_in_world);
+
+  // SE(3) naturally representation is a 4x4 matrix which can be accessed using
+  // the .matrix() method:
+  std::cout << "world_anchored_camera_pose:\n"
+            << world_anchored_camera_pose.matrix()(3,3) << std::endl;
+
 }

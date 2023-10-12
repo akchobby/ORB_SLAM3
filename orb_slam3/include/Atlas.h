@@ -34,7 +34,6 @@
 
 namespace ORB_SLAM3
 {
-class Viewer;
 class Map;
 class MapPoint;
 class KeyFrame;
@@ -81,7 +80,6 @@ public:
 
     unsigned long int GetLastInitKFid();
 
-    void SetViewer(Viewer* pViewer);
 
     // Method for change components in the current map
     void AddKeyFrame(KeyFrame* pKF);
@@ -152,7 +150,6 @@ protected:
 
     unsigned long int mnLastInitKFidMap;
 
-    Viewer* mpViewer;
     bool mHasViewer;
 
     // Class references for the map reconstruction from the save file
