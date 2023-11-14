@@ -1421,7 +1421,7 @@ void System::SaveAtlas(int type){
             cout << "Starting to write the save text file " << endl;
             std::remove(pathSaveFileName.c_str());
             std::ofstream ofs(pathSaveFileName, std::ios::binary);
-            boost::archive::text_oarchive oa(ofs);
+            boost::archive::text_oarchive oa(ofs,  boost::archive::no_header);
 
             oa << strVocabularyName;
             oa << strVocabularyChecksum;
@@ -1460,7 +1460,7 @@ bool System::LoadAtlas(int type)
             cout << "Load file not found" << endl;
             return false;
         }
-        boost::archive::text_iarchive ia(ifs);
+        boost::archive::text_iarchive ia(ifs, boost::archive::no_header);
         ia >> strFileVoc;
         ia >> strVocChecksum;
         ia >> mpAtlas;
